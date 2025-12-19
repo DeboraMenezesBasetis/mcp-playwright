@@ -83,33 +83,43 @@ export class PutRequestTool extends ApiToolBase {
     return this.safeExecute(context, async (apiContext) => {
       // Check if the value is valid JSON if it starts with { or [
       if (args.value && typeof args.value === 'string' && 
-          (args.value.startsWith('{') || args.value.startsWith('['))) {
+        (args.value.startsWith('{') || args.value.startsWith('['))) {
         try {
           JSON.parse(args.value);
-        } catch (error) {
-          return createErrorResponse(`Failed to parse request body: ${(error as Error).message}`);
+        } 
+        catch (error) {
+          return createErrorResponse(
+            `Failed to parse request body: ${(error as Error).message}`
+          );
         }
       }
-      
+
       const response = await apiContext.put(args.url, {
-        data: args.value
+        data: args.value,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(args.token ? { Authorization: `Bearer ${args.token}` } : {}),
+          ...(args.headers || {})
+        }
       });
-      
-      let responseText;
+
+      let responseText: string;
       try {
         responseText = await response.text();
-      } catch (error) {
-        responseText = "Unable to get response text";
+      } catch {
+        responseText = 'Unable to get response text';
       }
-      
+
       return createSuccessResponse([
         `PUT request to ${args.url}`,
         `Status: ${response.status()} ${response.statusText()}`,
-        `Response: ${responseText.substring(0, 1000)}${responseText.length > 1000 ? '...' : ''}`
+        `Response: ${responseText.substring(0, 1000)}${responseText.length > 1000 ? '...' : ''
+        }`
       ]);
     });
   }
 }
+
 
 /**
  * Tool for making PATCH requests
