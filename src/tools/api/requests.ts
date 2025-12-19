@@ -9,14 +9,19 @@ export class GetRequestTool extends ApiToolBase {
    * Execute the GET request tool
    */
   async execute(args: any, context: ToolContext): Promise<ToolResponse> {
-    return this.safeExecute(context, async (apiContext) => {
-      const response = await apiContext.get(args.url);
-      
-      let responseText;
+        return this.safeExecute(context, async (apiContext) => {
+      const response = await apiContext.get(args.url, {
+        headers: {
+          ...(args.token ? { Authorization: `Bearer ${args.token}` } : {}),
+          ...(args.headers || {})
+        }
+      });
+
+      let responseText: string;
       try {
         responseText = await response.text();
-      } catch (error) {
-        responseText = "Unable to get response text";
+      } catch (error){
+        responseText = 'Unable to get response text';
       }
       
       return createSuccessResponse([
