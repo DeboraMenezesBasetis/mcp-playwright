@@ -14,17 +14,17 @@ export function createToolDefinitions() {
             type: "object",
             description: "Code generation options",
             properties: {
-              outputPath: { 
-                type: "string", 
-                description: "Directory path where generated tests will be saved (use absolute path)" 
+              outputPath: {
+                type: "string",
+                description: "Directory path where generated tests will be saved (use absolute path)"
               },
-              testNamePrefix: { 
-                type: "string", 
-                description: "Prefix to use for generated test names (default: 'GeneratedTest')" 
+              testNamePrefix: {
+                type: "string",
+                description: "Prefix to use for generated test names (default: 'GeneratedTest')"
               },
-              includeComments: { 
-                type: "boolean", 
-                description: "Whether to include descriptive comments in generated tests" 
+              includeComments: {
+                type: "boolean",
+                description: "Whether to include descriptive comments in generated tests"
               }
             },
             required: ["outputPath"]
@@ -39,9 +39,9 @@ export function createToolDefinitions() {
       inputSchema: {
         type: "object",
         properties: {
-          sessionId: { 
-            type: "string", 
-            description: "ID of the session to end" 
+          sessionId: {
+            type: "string",
+            description: "ID of the session to end"
           }
         },
         required: ["sessionId"]
@@ -53,9 +53,9 @@ export function createToolDefinitions() {
       inputSchema: {
         type: "object",
         properties: {
-          sessionId: { 
-            type: "string", 
-            description: "ID of the session to retrieve" 
+          sessionId: {
+            type: "string",
+            description: "ID of the session to retrieve"
           }
         },
         required: ["sessionId"]
@@ -67,9 +67,9 @@ export function createToolDefinitions() {
       inputSchema: {
         type: "object",
         properties: {
-          sessionId: { 
-            type: "string", 
-            description: "ID of the session to clear" 
+          sessionId: {
+            type: "string",
+            description: "ID of the session to clear"
           }
         },
         required: ["sessionId"]
@@ -246,7 +246,19 @@ export function createToolDefinitions() {
       inputSchema: {
         type: "object",
         properties: {
-          url: { type: "string", description: "URL to perform GET operation" }
+          url: { type: "string", description: "URL to perform GET operation" 
+          },
+          token: {
+            type: "string",
+            description: "Bearer token for authorization"
+          },
+          headers: {
+            type: "object",
+            description: "Additional headers to include in the request",
+            additionalProperties: {
+              type: "string"
+            }
+          }
         },
         required: ["url"],
       },
@@ -260,8 +272,8 @@ export function createToolDefinitions() {
           url: { type: "string", description: "URL to perform POST operation" },
           value: { type: "string", description: "Data to post in the body" },
           token: { type: "string", description: "Bearer token for authorization" },
-          headers: { 
-            type: "object", 
+          headers: {
+            type: "object",
             description: "Additional headers to include in the request",
             additionalProperties: { type: "string" }
           }
